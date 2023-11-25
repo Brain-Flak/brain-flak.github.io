@@ -26,6 +26,16 @@ function hideRunButton() {
   document.getElementById("spinner").style = "display: initial";
 }
 
+function auto_grow(element) {
+  element.style.height = "5px";
+  element.style.height = (element.scrollHeight) + "px";
+}
+
+function resizeTextInputs() {
+  auto_grow(document.getElementById("code"));
+  auto_grow(document.getElementById("input"));
+}
+
 function cancel() {
   var executionEnd = Date.now() - 200;
 

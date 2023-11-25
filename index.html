@@ -4,13 +4,7 @@
     <script src="BF.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <script>
-    function auto_grow(element) {
-      element.style.height = "5px";
-      element.style.height = (element.scrollHeight) + "px";
-    }
-  </script>
-  <body>
+  <body onload="resizeTextInputs()">
     <div class="maincontent">
       <h1>Brain-flak</h1>
       <h3>Code:</h3>
