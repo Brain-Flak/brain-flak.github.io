@@ -1,0 +1,11 @@
+.maincontent {
+  max-width: 800px;
+  width: 80%;
+  margin: 0 auto;
+}
+textarea {
+  resize: none;
+  width: 100%;
+  min-height: 100px;
+  outline: none;
+}

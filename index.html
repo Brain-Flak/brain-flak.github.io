@@ -1,18 +1,28 @@
+<!DOCTYPE HTML>
 <html>
   <head>
     <script src="BF.js"></script>
+    <link rel="stylesheet" href="styles.css">
   </head>
+  <script>
+    function auto_grow(element) {
+      element.style.height = "5px";
+      element.style.height = (element.scrollHeight) + "px";
+    }
+  </script>
   <body>
-    <p>
+    <div class="maincontent">
       <h1>Brain-flak</h1>
-    </p>
-    <p>
-      <h2>Code:</h2>
-      <textarea id="code" rows="4" cols="50"></textarea>
-    </p>
-    <p>
-      <button onclick="RunBF()" type="button">Go!</button>
-    </p>
-    <a href="metagolfer/index.html">Integer Metagolfer!</a>
+      <h3>Code:</h3>
+      <textarea id="code" oninput="auto_grow(this)" spellcheck="false"></textarea>
+      <h3>Input:</h3>
+      <textarea id="input" oninput="auto_grow(this)" spellcheck="false"></textarea>
+      <p>
+        <button onclick="runBF()" type="button">Go!</button>
+      </p>
+      <h3>Output:</h3>
+      <textarea id="output" oninput="auto_grow(this)" spellcheck="false" readonly="true" style="user-select: none;"></textarea>
+      <a href="https://brain-flak.github.io/integer/">Integer Metagolfer!</a>
+    </div>
   </body>
 </html>
