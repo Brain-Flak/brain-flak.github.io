@@ -17,9 +17,13 @@
       <textarea id="code" oninput="auto_grow(this)" spellcheck="false"></textarea>
       <h3>Input:</h3>
       <textarea id="input" oninput="auto_grow(this)" spellcheck="false"></textarea>
-      <p>
-        <button onclick="runBF()" type="button">Go!</button>
-      </p>
+      <p></p>
+      <div class="row">
+        <button id="go" onclick="runBF()" type="button">Go!</button>
+        <button id="cancel" onclick="cancel()" type="button" style="display: none">Cancel</button>
+        <!--Spinner gif generated courtesy of loading.io-->
+        <img id="spinner" src="spinner.gif" width="40" height="40" style="display: none">
+      </div>
       <h3>Output:</h3>
       <textarea id="output" oninput="auto_grow(this)" spellcheck="false" readonly="true" style="user-select: none;"></textarea>
       <a href="https://brain-flak.github.io/integer/">Integer Metagolfer!</a>

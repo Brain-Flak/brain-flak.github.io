@@ -9,3 +9,11 @@ textarea {
   min-height: 100px;
   outline: none;
 }
+.row {
+  display: flex;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+button {
+  width: 100px;
+  height: 40px;
+}
