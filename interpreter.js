@@ -152,7 +152,8 @@ function run() {
       }
     }
     else if (token.char == "{}") {
-      curVal += stacks[curStackIndex].pop();
+      if (stacks[curStackIndex].length != 0)
+        curVal += stacks[curStackIndex].pop();
     }
     else if (token.char == "}") {
       var curStack = stacks[curStackIndex];
