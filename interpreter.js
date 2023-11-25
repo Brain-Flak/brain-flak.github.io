@@ -32,9 +32,6 @@ function preprocess(code) {
     else if (isClose(c)) {
       if (openTokenIndices.length == 0) {
         return `'${c}' at index ${i + 1} had no opening bracket.`;
-        // console.log("Malformed Monad")
-        // console.log(c + " on char " + i + " had no opening bracket.")
-        // return [];
       }
 
       var topToken = tokens[tokens.length - 1];
@@ -49,10 +46,6 @@ function preprocess(code) {
         if (!matches(tokens[lastOpenTokenIndex].char, c)) {
           var token = tokens[lastOpenTokenIndex];
           return `'${c}' at index ${i + 1} did not match ${token.char} at index ${token.index + 1}.`;
-
-          // console.log("Malformed Pair")
-          // console.log(token + " didn't match " + c + " on char " + i);
-          // return [];
         }
 
         tokens[lastOpenTokenIndex].closeTokenIndex = tokens.length;
@@ -103,6 +96,7 @@ function loadInitial(code, input) {
 
 
 function run() {
+  var i = 0;
   while (tokenIndex < tokens.length) {
     var token = tokens[tokenIndex];
 
@@ -139,9 +133,6 @@ function run() {
       curVal = thirdStack.pop();
     }
     else if (token.char == "{") {
-      thirdStack.push(curVal);
-      curVal = 0;
-
       var curStack = stacks[curStackIndex];
       var val = 0;
       if (curStack.length > 0)
@@ -149,6 +140,10 @@ function run() {
 
       if (val == 0) {
         tokenIndex = token.closeTokenIndex;
+      }
+      else {
+        thirdStack.push(curVal);
+        curVal = 0;
       }
     }
     else if (token.char == "{}") {
@@ -163,8 +158,9 @@ function run() {
 
       if (val != 0)
         tokenIndex = token.openTokenIndex;
-      else
+      else {
         curVal += thirdStack.pop();
+      }
 
     }
 
