@@ -4,11 +4,12 @@
     <script src="BF.js"></script>
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body onload="resizeTextInputs()">
+  <body onload="initialLoad()">
     <div class="maincontent">
       <h1>Brain-flak</h1>
       <h3>Code:</h3>
-      <textarea id="code" oninput="auto_grow(this)" spellcheck="false"></textarea>
+      <span style="float: right" id="charCount">a</span>
+      <textarea id="code" oninput="inputModified()" spellcheck="false"></textarea>
       <h3>Input:</h3>
       <textarea id="input" oninput="auto_grow(this)" spellcheck="false"></textarea>
       <p></p>

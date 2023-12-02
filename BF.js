@@ -4,6 +4,22 @@ var executionStart;
 window.addEventListener("keydown", keyPressed, false);
 window.addEventListener("load", clearOutput);
 
+function initialLoad() {
+  inputModified();
+  resizeTextInputs();
+}
+
+function inputModified() {
+  var codeElem = document.getElementById("code");
+  var code = codeElem.value;
+  var bracketCount = (code.match(/[\(\)\{\}\<\>\[\]]/g) || []).length;
+  if (bracketCount == code.length)
+    document.getElementById("charCount").innerText = `${bracketCount}`;
+  else
+    document.getElementById("charCount").innerText = `${bracketCount}/${code.length}`;
+  auto_grow(codeElem);
+}
+
 function clearOutput() {
   document.getElementById("output").value = "";
   document.getElementById("debug_info").innerHTML = "";
