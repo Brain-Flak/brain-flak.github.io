@@ -184,15 +184,15 @@ function run(options) {
 
   var text = "";
   var outputStack = stacks[curStackIndex];
+  if (!options.reverseOut) {
+    outputStack = outputStack.reverse();
+  }
+
   for (var i = 0; i < outputStack.length; i++) {
     if (options.outputType == "asciiOut")
       text += String.fromCharCode(outputStack[i]);
     else
       text += outputStack[i].toString() + "\n";
-  }
-
-  if (!options.reverseOut) {
-    text = text.split('').reverse().join('');
   }
 
   if (options.outputType == "decimalOut")
