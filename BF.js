@@ -9,7 +9,7 @@ function initialLoad() {
 
   var codeB64 = params.get("c");
   if (codeB64 != null) {
-    document.getElementById("code").value = atob(codeB64);
+    document.getElementById("code").value = decompress(codeB64);
   }
 
   var optNum = params.get("o");
@@ -35,7 +35,7 @@ function initialLoad() {
 
   var input = params.get("i");
   if (input != null) {
-    document.getElementById("input").value = atob(input);
+    document.getElementById("input").value = decompress(input);
   }
 
   inputModified();
@@ -129,9 +129,9 @@ function generatePermalink() {
   if (options.reverseOut)
     optNum |= 0x08;
 
-  var search = `?c=${btoa(code)}&o=${optNum}`
+  var search = `?c=${compress(code)}&o=${optNum}`
   if (input.length > 0)
-    search += `&i=${btoa(input)}`
+    search += `&i=${compress(input)}`
 
   window.history.replaceState(null, "", search);
   navigator.clipboard.writeText(window.location.href);
@@ -189,4 +189,49 @@ function runBF() {
   else {
     document.getElementById("output").value = "Please upgrade to a newer browser.";
   }
+}
+
+function deflate(byteString) {
+	return pako.deflateRaw(byteStringToByteArray(byteString), {"level": 9});
+}
+
+function inflate(byteString) {
+	return byteArrayToByteString(pako.inflateRaw(byteString));
+}
+
+function byteStringToByteArray(byteString) {
+	var byteArray = new Uint8Array(byteString.length);
+	for(var index = 0; index < byteString.length; index++)
+		byteArray[index] = byteString.charCodeAt(index);
+	byteArray.head = 0;
+	return byteArray;
+}
+
+function byteArrayToByteString(byteArray) {
+	var retval = "";
+	iterate(byteArray, function(byte) { retval += String.fromCharCode(byte); });
+	return retval;
+}
+
+function iterate(iterable, monad) {
+	if (!iterable)
+		return;
+	for (var i = 0; i < iterable.length; i++)
+		monad(iterable[i]);
+}
+
+function byteStringToBase64(byteString) {
+	return btoa(byteString).replace(/\+/g, "@").replace(/=+/, "");
+}
+
+function base64ToByteString(base64String) {
+	return atob(unescape(base64String).replace(/@|-/g, "+").replace(/_/g, "/"))
+}
+
+function compress(str) {
+  return byteStringToBase64(byteArrayToByteString(deflate(str)))
+}
+
+function decompress(str) {
+  return inflate(byteStringToByteArray(base64ToByteString(str)));
 }
