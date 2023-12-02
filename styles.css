@@ -14,6 +14,9 @@
 .optionbox {
   width: 33%;
 }
+.aboutText {
+  font-size: 18px;
+}
 textarea {
   resize: none;
   width: 100%;

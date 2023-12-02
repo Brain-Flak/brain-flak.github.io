@@ -6,7 +6,7 @@
   </head>
   <body onload="initialLoad()">
     <div class="maincontent">
-      <h1>Brain-flak</h1>
+      <a href=https://github.com/DJMcMayhem/Brain-Flak><h1>Brain-flak</h1></a>
       <h3>Code:</h3>
       <span style="float: right" id="charCount"></span>
       <textarea id="code" oninput="inputModified()" spellcheck="false"></textarea>
@@ -53,7 +53,50 @@
       <textarea id="output" oninput="auto_grow(this)" spellcheck="false" readonly="true" style="user-select: none;"></textarea>
       <p id="debug_info" class="monospace"></p>
       <p></p>
-      <a href="https://brain-flak.github.io/integer/">Integer Metagolfer!</a>
+      <!-- <a href="https://brain-flak.github.io/integer/">Integer Metagolfer!</a> -->
+      <br>
+      <hr>
+      <div class="aboutText">
+        <h1>What is this?</h1>
+        <p>
+          Brain-Flak is a
+          <a href=https://en.wikipedia.org/wiki/Turing_tarpit>"Turing-tarpit"</a>,
+          e.g. a language which can, in theory compute anything, but in reality
+          is very inconvenient and painful to use. It was somewhat inspired by
+          <a href=https://en.wikipedia.org/wiki/Brainfuck>Brainfuck</a>, the
+          original turing-tarpit, but it was designed with the goal of being
+          comprised entirely of nested and balanced brackets.
+        </p>
+        <h2>Tutorial</h2>
+        <p>Brain-Flak has two stacks. One stack is the "active" stack, and the other is the "inactive" stack. If an empty stack is popped, it will return 0. That&#39;s it. No other variables. When the program starts, each command line argument is pushed on to the active stack.</p>
+        <p>The only valid characters in a Brain-Flak program are '<code>()[]{}&lt;&gt;</code>', and they must always be balanced. There are two types of functions: <em>Nilads</em> and <em>Monads</em>. A <em>nilad</em> is a function that takes 0 arguments, and a <em>monad</em> is a function that takes 1 argument. Here are all of the nilads:</p>
+        <ul>
+        <li><code>()</code> Evaluates to one.</li>
+        <li><code>[]</code> Evaluates to the height of the current stack.</li>
+        <li><code>{}</code> Pop the active stack. Evaluates to the popped value.</li>
+        <li><code>&lt;&gt;</code> Toggle the active stack. Evaluates to zero.</li>
+        </ul>
+        <p>These values of these commands are summed together when they are evaluated. So if we had a &#39;3&#39; on top of the active stack, this snippet:</p>
+        <pre><code>()(){}
+        </code></pre><p>would evaluate to <code>1 + 1 + active.pop()</code> which would evaluate to 5.</p>
+        <p>The monads take one argument, a chunk of Brain-Flak code. Here are all of the monads:</p>
+        <ul>
+        <li><code>(n)</code> Push &#39;n&#39; on the active stack.</li>
+        <li><code>[n]</code> Evaluates to negative &#39;n&#39;</li>
+        <li><code>{foo}</code> While zero is not on the top of the stack, do foo.</li>
+        <li><code>&lt;foo&gt;</code> Execute foo, but evaluate it as 0.</li>
+        </ul>
+        <p>The <code>(...)</code> monad will also evaluate to its argument, so</p>
+        <pre><code>(()()())
+        </code></pre><p>Will push 3 but</p>
+        <pre><code>((()()()))
+        </code></pre><p>Will push 3 <em>twice</em>.</p>
+        <p>The <code>{...}</code> monad will evaluate to the sum of all runs.  So if we had &#39;3&#39; and &#39;4&#39; on the top of the stack:</p>
+        <pre><code>{{}}
+        </code></pre><p>would evaluate as 7.</p>
+        <p>When the program is done executing, each value left on the active stack is printed, with a newline between. Values on the other stack are ignored.</p>
+        <p>Congratulation! You have learned how to write brain-flak code.</p>
+      </div>
     </div>
   </body>
 </html>
