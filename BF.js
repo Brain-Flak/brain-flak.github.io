@@ -54,6 +54,13 @@ function timeFormat(ms) {
   return `${ms / 1000}s`
 }
 
+function resetSettings() {
+  document.getElementById("decimalIn").checked = true;
+  document.getElementById("decimalOut").checked = true;
+  document.getElementById("reverseIn").checked = false;
+  document.getElementById("reverseOut").checked = false;
+}
+
 function runBF() {
   executionStart = Date.now();
   clearOutput();
@@ -63,6 +70,13 @@ function runBF() {
 
   hideRunButton();
 
+  var inputType = document.getElementById("inputType").elements["inputType"].value;
+  var outputType = document.getElementById("outputType").elements["outputType"].value;
+  var reverseIn = document.getElementById("reverseIn").checked;
+  var reverseOut = document.getElementById("reverseOut").checked;
+
+  var options = { inputType: inputType, outputType, reverseIn, reverseOut };
+
   if (typeof(Worker) !== "undefined") {
     if (typeof(bfWorker) == "undefined") {
       bfWorker = new Worker("./interpreter.js");
@@ -70,13 +84,26 @@ function runBF() {
       bfWorker.onmessage = function(event) {
         var executionEnd = Date.now() - 200;
 
-        document.getElementById("output").value = event.data;
+        var outputDoc = document.getElementById("output");
+        outputDoc.value = event.data;
+        auto_grow(outputDoc);
         document.getElementById("debug_info").innerHTML = `${timeFormat(executionEnd - executionStart)} taken.`;
         bfWorker = undefined;
         restoreRunButton();
       }
 
-      bfWorker.postMessage([code, input])
+      bfWorker.onerror = function(event) {
+        var executionEnd = Date.now() - 200;
+
+        var outputDoc = document.getElementById("output");
+        outputDoc.value = "Interpreter Error.";
+        auto_grow(outputDoc);
+        document.getElementById("debug_info").innerHTML = `${timeFormat(executionEnd - executionStart)} taken.`;
+        bfWorker = undefined;
+        restoreRunButton();
+      }
+
+      bfWorker.postMessage([code, input, options])
     }
   }
   else {

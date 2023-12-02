@@ -69,7 +69,7 @@ var curVal = 0;
 var tokenIndex = 0;
 var tokens = [];
 
-function loadInitial(code, input) {
+function loadInitial(code, input, options) {
   tokens = preprocess(code);
 
   // if err returned.
@@ -78,24 +78,39 @@ function loadInitial(code, input) {
     return;
   }
 
-  if (input.length > 0) {
-    var inputs = input.split(/\s+/);
-    for (var i = inputs.length - 1; i > -1; i--) {
-      var s = inputs[i];
-      var num = parseInt(s, 10);
-      if (isNaN(num)) {
+  var inputs;
+  if (input == "")
+    inputs = [];
+  else if (options.inputType == "asciiIn")
+    inputs = input.split(new RegExp());
+  else
+    inputs = input.split(/\s+/);
+
+  for (var i = 0; i < inputs.length; i++) {
+    var s = inputs[i];
+    var val;
+    if (options.inputType == "asciiIn")
+      val = inputs[i].charCodeAt(0);
+    else {
+      val = parseInt(s, 10);
+      if (isNaN(val)) {
         postMessage(`Could not parse input ${i + 1} ('${s}') as an integer.`);
         return;
       }
-      stacks[0].push(num);
     }
+
+    stacks[0].push(val);
   }
 
-  run();
+  if (!options.reverseIn) {
+    stacks[0] = stacks[0].reverse();
+  }
+
+  run(options);
 }
 
 
-function run() {
+function run(options) {
   var i = 0;
   while (tokenIndex < tokens.length) {
     var token = tokens[tokenIndex];
@@ -169,14 +184,24 @@ function run() {
 
   var text = "";
   var outputStack = stacks[curStackIndex];
-  for (var i = outputStack.length - 1; i > -1; i--) {
-    text += outputStack[i].toString() + "\n";
+  for (var i = 0; i < outputStack.length; i++) {
+    if (options.outputType == "asciiOut")
+      text += String.fromCharCode(outputStack[i]);
+    else
+      text += outputStack[i].toString() + "\n";
   }
+
+  if (!options.reverseOut) {
+    text = text.split('').reverse().join('');
+  }
+
+  if (options.outputType == "decimalOut")
+    text = text.trim();
 
   postMessage(text);
 }
 
 onmessage = (e) => {
   // Add an arbitrary timeout so that it's clear the code has run
-  setTimeout(() => { loadInitial(e.data[0], e.data[1]); }, 200);
+  setTimeout(() => { loadInitial(e.data[0], e.data[1], e.data[2]); }, 200);
 }

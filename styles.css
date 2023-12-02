@@ -3,20 +3,35 @@
   width: 80%;
   margin: 0 auto;
 }
+.row {
+  display: flex;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex-direction: row;
+}
+.monospace {
+  font-family: "Courier New"
+}
+.optionbox {
+  width: 33%;
+}
 textarea {
   resize: none;
   width: 100%;
   min-height: 100px;
   outline: none;
 }
-.row {
-  display: flex;
-  grid-template-columns: 1fr 1fr 1fr;
-}
 button {
   width: 100px;
   height: 40px;
 }
-.monospace {
-  font-family: "Courier New"
+details > summary {
+  padding: 2px 6px;
+  cursor: pointer;
+  font-size: 14pt;
+}
+input {
+  cursor: pointer;
+}
+label {
+  cursor: pointer;
 }

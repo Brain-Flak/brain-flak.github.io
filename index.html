@@ -12,6 +12,35 @@
       <h3>Input:</h3>
       <textarea id="input" oninput="auto_grow(this)" spellcheck="false"></textarea>
       <p></p>
+      <details>
+        <summary>Options...</summary>
+        <p>
+          <button id="defaultSettings" onclick="resetSettings()" type="button">Default</button>
+        </p>
+        <div class="row">
+          <form class="optionbox" id="inputType">
+            <legend>Input Type...</legend>
+            <input type="radio" id="decimalIn" name="inputType" value="decimalIn" checked/>
+            <label for="decimalIn">Decimal</label><br />
+            <input type="radio" id="asciiIn" name="inputType" value="asciiIn" />
+            <label for="asciiIn">ASCII</label><br />
+            <br>
+            <input type="checkbox" id="reverseIn" value="reverseIn">
+            <label for="reverseIn">Reverse Input?</label>
+          </form>
+          <form class="optionbox" id="outputType">
+            <legend>Output Type...</legend>
+            <input type="radio" id="decimalOut" name="outputType" value="decimalOut" checked/>
+            <label for="decimalOut">Decimal</label><br />
+            <input type="radio" id="asciiOut" name="outputType" value="asciiOut" />
+            <label for="asciiOut">ASCII</label><br />
+            <br>
+            <input type="checkbox" id="reverseOut" value="reverseOut">
+            <label for="reverseOut">Reverse Output?</label>
+          </form>
+        </div>
+      </details>
+      <p></p>
       <div class="row">
         <button id="go" onclick="runBF()" type="button">Go!</button>
         <button id="cancel" onclick="cancel()" type="button" style="display: none">Cancel</button>
