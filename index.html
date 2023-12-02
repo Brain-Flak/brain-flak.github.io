@@ -8,8 +8,9 @@
     <div class="maincontent">
       <h1>Brain-flak</h1>
       <h3>Code:</h3>
-      <span style="float: right" id="charCount">a</span>
+      <span style="float: right" id="charCount"></span>
       <textarea id="code" oninput="inputModified()" spellcheck="false"></textarea>
+      <button id="getLink" onclick="generatePermalink()" type="button">Permalink</button>
       <h3>Input:</h3>
       <textarea id="input" oninput="auto_grow(this)" spellcheck="false"></textarea>
       <p></p>

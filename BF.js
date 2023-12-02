@@ -5,6 +5,39 @@ window.addEventListener("keydown", keyPressed, false);
 window.addEventListener("load", clearOutput);
 
 function initialLoad() {
+  var params = new URLSearchParams(window.location.search);
+
+  var codeB64 = params.get("c");
+  if (codeB64 != null) {
+    document.getElementById("code").value = atob(codeB64);
+  }
+
+  var optNum = params.get("o");
+  if (optNum != null) {
+    var asciiIn  = (optNum & 0x01);
+    var reverseIn  = (optNum & 0x02);
+    var asciiOut = (optNum & 0x04);
+    var reverseOut = (optNum & 0x08);
+
+    if (asciiIn)
+      document.getElementById("asciiIn").checked = true;
+    else
+      document.getElementById("decimalIn").checked = true;
+
+    if (asciiOut)
+      document.getElementById("asciiOut").checked = true;
+    else
+      document.getElementById("decimalOut").checked = true;
+
+    document.getElementById("reverseIn").checked = reverseIn;
+    document.getElementById("reverseOut").checked = reverseOut;
+  }
+
+  var input = params.get("i");
+  if (input != null) {
+    document.getElementById("input").value = atob(input);
+  }
+
   inputModified();
   resizeTextInputs();
 }
@@ -28,6 +61,9 @@ function clearOutput() {
 function keyPressed(evt) {
   if (evt.ctrlKey && evt.keyCode == 13)
     runBF();
+  // 's' shortcut
+  if (evt.keyCode == 83 && document.activeElement.type != "textarea")
+    generatePermalink();
 }
 
 function restoreRunButton() {
@@ -77,6 +113,39 @@ function resetSettings() {
   document.getElementById("reverseOut").checked = false;
 }
 
+function generatePermalink() {
+  var code = document.getElementById("code").value;
+  var input = document.getElementById("input").value;
+
+  var options = getOptions();
+  var optNum = 0;
+
+  if (options.inputType == "asciiIn")
+    optNum |= 0x01;
+  if (options.reverseIn)
+    optNum |= 0x02;
+  if (options.outputType == "asciiOut")
+    optNum |= 0x04;
+  if (options.reverseOut)
+    optNum |= 0x08;
+
+  var search = `?c=${btoa(code)}&o=${optNum}`
+  if (input.length > 0)
+    search += `&i=${btoa(input)}`
+
+  window.history.replaceState(null, "", search);
+  navigator.clipboard.writeText(window.location.href);
+}
+
+function getOptions() {
+  var inputType = document.getElementById("inputType").elements["inputType"].value;
+  var outputType = document.getElementById("outputType").elements["outputType"].value;
+  var reverseIn = document.getElementById("reverseIn").checked;
+  var reverseOut = document.getElementById("reverseOut").checked;
+
+  return { inputType: inputType, outputType, reverseIn, reverseOut };
+}
+
 function runBF() {
   executionStart = Date.now();
   clearOutput();
@@ -86,12 +155,7 @@ function runBF() {
 
   hideRunButton();
 
-  var inputType = document.getElementById("inputType").elements["inputType"].value;
-  var outputType = document.getElementById("outputType").elements["outputType"].value;
-  var reverseIn = document.getElementById("reverseIn").checked;
-  var reverseOut = document.getElementById("reverseOut").checked;
-
-  var options = { inputType: inputType, outputType, reverseIn, reverseOut };
+  var options = getOptions();
 
   if (typeof(Worker) !== "undefined") {
     if (typeof(bfWorker) == "undefined") {
